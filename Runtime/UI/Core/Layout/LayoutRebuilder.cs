@@ -169,14 +169,16 @@ namespace UnityEngine.UI
         /// <param name="rect">Rect to rebuild.</param>
         public static void MarkLayoutForRebuild(RectTransform rect)
         {
-            if (rect == null || rect.gameObject == null)
-                return;
-
-            var comps = ListPool<Component>.Get();
+            if (rect == null)
+                return;            
+            
+            var comps = ListPool<Component>.Get();            
             bool validLayoutGroup = true;
+
             RectTransform layoutRoot = rect;
             var parent = layoutRoot.parent as RectTransform;
-            while (validLayoutGroup && !(parent == null || parent.gameObject == null))
+            
+            while (validLayoutGroup && parent != null && parent.gameObject.activeSelf)
             {
                 validLayoutGroup = false;
                 parent.GetComponents(typeof(ILayoutGroup), comps);
